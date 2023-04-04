@@ -28,7 +28,7 @@ $ git clone https://github.com/adamzea/mastodon-install-script-OracleCloud.git
    This script will ask you to enter the server's domain name and email address of the administrator.
 
 ```bash
-$ cd mastodon-install-script
+$ cd mastodon-install-script-OracleCloud
 $ ./install.sh
 ```
 
