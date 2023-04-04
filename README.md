@@ -21,7 +21,7 @@ I hope it will be useful for you.
 ```bash
 # su - mastodon
 $ cd ~
-$ git clone https://github.com/nesosuke/mastodon-install-script.git
+$ git clone https://github.com/adamzea/mastodon-install-script-OracleCloud.git
 ```
 
 3. Run `install.sh`.
