@@ -12,6 +12,9 @@ fi
 
 DEBIN_FRONTEND=noninteractive
 # Pre-requisite
+# Open ports
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT && sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
+sudo netfilter-persistent save
 ## system repository
 echo "installing pre-requisite"
 sudo apt install -y curl wget gnupg apt-transport-https lsb-release ca-certificates
