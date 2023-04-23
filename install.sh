@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Ingress rules warning
+echo "Before continuing make sure you have an A record in your DNS for your domain that points to the public IP address of your server. Also be sure to set up ingress rules in your instance's security list for port 80 and 443. See: https://blogs.oracle.com/cloud-infrastructure/post/a-simple-guide-to-adding-rules-to-security-lists-using-oci-cli"
 # Input server domain
 read -p "Input your server domain without \"http\" (e.g. mastodon.example.com) > " SERVER_FQDN
 read -p "Obtain SSL Cert ? [y/N] > " SSL_CERT
