@@ -10,14 +10,16 @@ else
   echo ""
 fi
 
-DEBIN_FRONTEND=noninteractive
+DEBIAN_FRONTEND=noninteractive
 # Pre-requisite
+# Uninstall iptables
+sudo apt remove iptables -y
 # Open ports
-sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT && sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
-sudo netfilter-persistent save
+#sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT && sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
+#sudo netfilter-persistent save
 ## system repository
 echo "installing pre-requisite"
-sudo apt install -y curl wget gnupg apt-transport-https lsb-release ca-certificates
+sudo apt install -y curl wget git gnupg apt-transport-https lsb-release ca-certificates
 ## Node.js v16
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 ## PostgreSQL
@@ -116,6 +118,9 @@ else
   echo "" > /dev/null
 fi
 sudo cp /home/mastodon/live/dist/$SERVER_FQDN.conf /etc/nginx/conf.d/$SERVER_FQDN.conf
+
+# Fix permissions
+sudo usermod --append --groups mastodon www-data
 
 # Set up systemd services
 echo "setting up systemd services"
