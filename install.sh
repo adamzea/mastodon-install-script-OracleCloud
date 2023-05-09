@@ -131,4 +131,29 @@ sudo cp /home/mastodon/live/dist/mastodon-*.service /etc/systemd/system/
 sudo systemctl enable --now mastodon-web.service mastodon-streaming.service mastodon-sidekiq.service
 sudo systemctl restart nginx.service
 
+# Set up disk cleanup script
+sudo tee purge-media.sh <<EOF
+#!/bin/bash
+# Source: https://ricard.dev/improving-mastodons-disk-usage/
+# Prune remote accounts that never interacted with a local user
+RAILS_ENV=production /home/mastodon/live/bin/tootctl accounts prune;
+
+# Remove remote statuses that local users never interacted with older than 4 days
+RAILS_ENV=production /home/mastodon/live/bin/tootctl statuses remove --days 4;
+
+# Remove media attachments older than 4 days
+RAILS_ENV=production /home/mastodon/live/bin/tootctl media remove --days 4;
+
+# Remove all headers (including people I follow)
+RAILS_ENV=production /home/mastodon/live/bin/tootctl media remove --remove-headers --include-follows --days 0;
+
+# Remove link previews older than 4 days
+RAILS_ENV=production /home/mastodon/live/bin/tootctl preview_cards remove --days 4;
+
+# Remove files not linked to any post
+RAILS_ENV=production /home/mastodon/live/bin/tootctl media remove-orphans; 
+EOF
+sudo apt install cron
+(crontab -l ; echo "0 5 * * 1 purge-media.sh") | sort - | uniq - | crontab - 
+
 echo "done :tada:"
